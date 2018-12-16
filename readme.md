@@ -1,25 +1,28 @@
 # high-select
 
-High-select is a webcomponent custom element, looks like classic select html element but with more capabilities, for instance: putting html tags in its options, customizing search records for any options and customizing its styles.
+`high-select` is a custom element looks like classic `select` html element but with more capabilities like putting html tags in its options, customizing search records for any options and customizing its styles.
+
+[Live Demo](https://dictiwa.com/high-select/)
 
 
 ## Installation
 
-You can use high-select via script tag or node.
+You can use `high-select` via script tag or npm.
 
 ### Script Tag
 
 add below tag to your html document
 
 ```html
-<script  type="module" src='https://unpkg.com/high-select@0.0.5/lib/high-select.js'></script>
+<script  type="module" src='https://unpkg.com/high-select@0.0.9/lib/high-select.js'></script>
 ```
+
 
 ### npm
 
 ```npm
  npm install high-select --save
-````
+```
 
 once you installed the package, you can add this tag to your html document
 
@@ -27,27 +30,28 @@ once you installed the package, you can add this tag to your html document
 <script  type="module" src='node_modules/high-select/lib/high-select.js'></script>
 ```
 
+
 ## Usage
 
-first, create your high-select tag
+first, create your `high-select` tag
 
 ```html
 <high-select></high-select>
 ```
 
-then add some options inside it
+then add some `high-option`s inside it
 
 ```html
 <high-select>
-    <hi-option> option 1 </high-option>
-    <hi-option> option 2 </high-option>
-    <hi-option> option 3 </high-option>
-    <hi-option> option 4 </high-option>
-    <hi-option> option 5 </high-option>
+    <high-option> option 1 </high-option>
+    <high-option> option 2 </high-option>
+    <high-option> option 3 </high-option>
+    <high-option> option 4 </high-option>
+    <high-option> option 5 </high-option>
 </high-select>
 ```
 
-your high-select element is ready.
+your `high-select` element is ready.
 
 ## How does it work?
 
@@ -55,7 +59,7 @@ your high-select element is ready.
 
 ### value of an option
 
-until you give an `option` a `value` attribute the option `innerText` would be the value of that. so if you have a custom value you must put it in the value attribute like thise.
+until you give an `option` a `value` attribute, the option's `innerText` would be the value of that. so if values of your options are unreadable or coded or ... give options the value attribute like this:
 
 ```html
 <high-option value="1"> Option 1 </high-option>
@@ -63,7 +67,7 @@ until you give an `option` a `value` attribute the option `innerText` would be t
 
 ### default value of select
 
-if you give an option a `selected` attribute, it would be the select value untill user change it. otherwise the first option would be selected be default.
+if you give an option a `selected` attribute, it would be the `high-select` value untill user change it. otherwise the first option would be selected by default.
 
 ### search
 
@@ -75,7 +79,7 @@ to enable search in options you sould give the `high-select` a `search` attribut
 
 #### customize the search
 
-give options a `record` attribute and put your records there, when user search for a something, high-select search for any string in the `record` attribute and the option's innerText that match the case.
+give options a `record` attribute and put your records there, when user search for something, `high-select` search for any string in the `record` attribute and `innerText` of all options to find the match.
 
 ```html
 <high-select search>
@@ -83,9 +87,12 @@ give options a `record` attribute and put your records there, when user search f
 </high-select>
 ```
 
+above option would be found one search input of "1", "o", "one", "uno"
+
+
 ### using html in options
 
-you allowed to use html like images and ... in options, but you must give the option a `title` attribute, so when user select the option the title would be shown as selected option.
+you can use any html tags in the high-options tags including img, ... , but you must give the option a `title` attribute, so when user select the option, `title` would be shown as selected option.
 
 ```html
 <high-select search>
@@ -99,15 +106,18 @@ you allowed to use html like images and ... in options, but you must give the op
 </high-select>
 ```
 
+
 ### disabling
 
-you can disable `high-select` and its options at any time just give them a `disabled` attribute.
+you can disable `high-select` and its options at any time, just give them a `disabled` attribute.
 
-### manipulating by javascript
 
-`high-select` states could be change via javascript.
+## manipulating by javascript
 
-#### getting select value
+`high-select` state could be accessed and change via javascript.
+
+
+### getting select value
 
 select the `high-select` element and get its value property.
 
@@ -115,7 +125,8 @@ select the `high-select` element and get its value property.
 document.querySelector("high-select").value;
 ```
 
-#### changing the select value
+
+### changing the select value
 
 put the value in the `high-select` value property.
 
@@ -125,7 +136,8 @@ document.querySelector("high-select").value = "it";
 
 if the value you give high-select would not be available in options, it simply ignore it.
 
-#### change options selected property
+
+### change options selected property
 
 if you give any options of `high-select` a `selected` property.
 the option change the select value.
@@ -135,7 +147,7 @@ document.querySelector("high-select").children[2].selected = true;
 ```
 
 
-### change event
+## change event
 
 you can catch the change event of `high-select` by listening to it. whenever the value change by user interacting with element, `high-select` tells you.
 
@@ -149,61 +161,101 @@ document.querySelector("high-select").addEventListener("change", function(){
 
 user could interact with `high-select` via mouse and keyboard easily. (Enter, Esc, Arrow down, Arrow up, Home, End)
 
+
 ## styling
+
+customize `high-select` styles.
+
 
 ### high-select's HTML structor
 
-`high-select` use shadow dom for the most part of itself, so styling it would not be so easy, the structure of its shadowdom is like this:
+![High-select Structure](https://dictiwa.com/high-select/high-select.png)
+
+`high-select` use shadow dom for the most part of itself, so styling it would not be so easy, the structure of its shadow dom is like this:
 
 there is an element with id of `caller`, caller would call the list of options which it is in another element with id `bigot`.
-inside begiot we have `search` which contains an input element and `holder` which hold the options.
+inside bigot we have `search` which contains an input element and `holder` which hold the options.
+
 
 ### styling variables
 
 there is list of css variable that make you able to change the shadow dom's elements style:
 
 --caller-padding
+
 --caller-background
+
 --caller-shadow
+
 --caller-color
+
 --caller-border-radius
 
+
 --caller-disabled-color
+
 --caller-disabled-background
 
+
 --caller-hover-cursor
+
 --caller-hover-background
+
 --caller-hover-color
+
 
 --caller-focus-outline
 
+
 --arrow-font-size
+
 --arrow-margin
+
 --arrow-color
 
+
 --bigot-shadow
+
 --bigot-background
+
 --bigot-border
 
+
 --input-outline
+
 --input-margin
+
 --input-width
+
 --input-border-width
+
 --input-border-color
+
 --input-border-style
+
 --input-font
+
 --input-padding
+
 --input-color
+
 --input-background
 
 please suggest us if you think there could be more variables needed.
+
+
+## problem and issues
+
+- currently high-select not working properly in iframe and a tranformed container, any idea about how to fix it?
+- edge has issues with display properties of shadow dom elements.
+
  
 ## Contributing
 
 1. Fork it!
-2. Create your feature branch: `git checkout -b my-new-feature`
+2. Create your feature branch: `git checkout -b new-feature`
 3. Commit your changes: `git commit -am 'Add some feature'`
-4. Push to the branch: `git push origin my-new-feature`
+4. Push to the branch: `git push origin new-feature`
 5. Submit a pull request :D
 
 ## License
