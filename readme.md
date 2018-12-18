@@ -1,13 +1,13 @@
 # high-select
 
-`high-select` is a custom element looks like classic `select` html element but with more capabilities like putting html tags in its options, customizing search records for any options and customizing its styles.
+`high-select` is a custom element looks like classic `select` HTML element but with more capabilities like putting HTML tags in its options, customizing search records for any options and customizing its styles.
 
 [Live Demo](https://dictiwa.com/high-select/)
 
 
 ## Installation
 
-You can use `high-select` via script tag or npm.
+You can use `high-select` via script tag or NPM.
 
 ### Script Tag
 
@@ -18,7 +18,7 @@ add below tag to your html document
 ```
 
 
-### npm
+### NPM
 
 ```npm
  npm install high-select --save
