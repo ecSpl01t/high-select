@@ -2,8 +2,6 @@
 
 `high-select` is a custom element looks like classic `select` HTML element but with more capabilities like putting HTML tags in its options, customizing search records for any options and customizing its styles.
 
-[Live Demo](https://dictiwa.com/high-select/)
-
 
 ## Installation
 
@@ -14,7 +12,7 @@ You can use `high-select` via script tag or NPM.
 add below tag to your html document
 
 ```html
-<script  type="module" src='https://unpkg.com/high-select@0.0.9/lib/high-select.js'></script>
+<script  type="module" src='https://unpkg.com/high-select@0.2.0/lib/high-select.js'></script>
 ```
 
 
@@ -71,10 +69,26 @@ if you give an option a `selected` attribute, it would be the `high-select` valu
 
 ### search
 
-to enable search in options you sould give the `high-select` a `search` attribute.
+to enable search in options you should give the `high-select` a `search` attribute.
 
 ```html
 <high-select search></high-select>
+```
+
+### arrow
+
+to enable arrow in options you should give the `high-select` a `arrow` attribute.
+
+```html
+<high-select arrow></high-select>
+```
+
+### animated
+
+to enable animation in options you should give the `high-select` a `animated` attribute.
+
+```html
+<high-select animated></high-select>
 ```
 
 #### customize the search
@@ -95,7 +109,7 @@ above option would be found one search input of "1", "o", "one", "uno"
 you can use any html tags in the high-options tags including img, ... , but you must give the option a `title` attribute, so when user select the option, `title` would be shown as selected option.
 
 ```html
-<high-select search>
+<high-select animated arrow search>
     <high-option>Select a country</high-option>
     <high-option value="it" title="italy">
         <img src="an-image-of-italy">    
@@ -167,9 +181,7 @@ user could interact with `high-select` via mouse and keyboard easily. (Enter, Es
 customize `high-select` styles.
 
 
-### high-select's HTML structor
-
-![High-select Structure](https://dictiwa.com/high-select/high-select.png)
+### high-select's HTML structure
 
 `high-select` use shadow dom for the most part of itself, so styling it would not be so easy, the structure of its shadow dom is like this:
 
@@ -240,6 +252,28 @@ there is list of css variable that make you able to change the shadow dom's elem
 --input-color
 
 --input-background
+
+--animated-time
+
+--option-padding
+
+--option-border
+
+--option-hover-background
+
+--option-hover-color
+
+--option-disabled-background
+
+--option-disabled-color
+
+--option-active-background
+
+--option-active-color
+
+--option-selected-background
+
+--option-selected-color
 
 please suggest us if you think there could be more variables needed.
 

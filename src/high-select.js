@@ -8,11 +8,11 @@
         ARROW_DOWN: 40,
         HOME: 36,
         END: 35
-    }
+    };
 
     const isKeyPrintable = (keyCode) => {
         return (keyCode > 47 && keyCode < 58) || keyCode == 32 || (keyCode > 64 && keyCode < 91) || (keyCode > 95 && keyCode < 112) || (keyCode > 185 && keyCode < 193) || (keyCode > 218 && keyCode < 223);
-    }
+    };
 
     const template = document.createElement('template');
     template.innerHTML = `
@@ -36,51 +36,77 @@
                 height: inherit;
                 width: inherit;
                 align-items: center;
-            }#caller :first-child{ 
+            }
+            #caller :first-child{ 
                 position: relative;
                 width: inherit;
                 overflow-x: hidden;
             }
-            
             :host([disabled]) #caller {
                 color: var(--caller-disabled-color, #aaa);
                 background: var(--caller-disabled-background, #eee);
-            }:host(:not([disabled])) #caller:hover{
+            }
+            :host(:not([disabled])) #caller:hover{
                 cursor: var(--caller-hover-cursor, pointer);
                 background: var(--caller-hover-background, #fcfcfc);
                 color: var(--caller-hover-color, #000);
-            }:host(:not([disabled]):focus) #caller{
+            }
+            :host(:not([disabled]):focus) #caller{
                 outline: var(--caller-focus-outline, rgb(229, 151, 0) auto 1px);
             }
-    
+            
             :host([arrow]) #arrow {
-                font-size: var(--arrow-font-size, 8px);
+                line-height: 20px;
+                font-size: var(--arrow-font-size, 18px);
                 margin: var(--arrow-margin, 0px 3px);
                 color: var(--arrow-color, #000);
-            }:host(:not([arrow])) #arrow {
+            }
+            :host([arrow]):host([expanded]) #arrow > span {
+                transform: rotate(90deg);
+                left: 3px;
+                top: 0px;
+            }		
+            :host([arrow]) #arrow > span {
+                position: relative;
+                display: block;
+                top: -1px;
+                transform: rotate(-90deg);
+            }
+            :host([animated]) #arrow > span {
+                transition: transform var(--animated-time, 0.15s) linear;
+            }
+            :host(:not([arrow])) #arrow {
                 display: none;
             }
-            
+
             #bigot {
                 position: fixed;
                 box-shadow: var(--bigot-shadow, 0px 0px 6px #ccc);
                 background: var(--bigot-background, #fff);
                 border: var(--bigot-border, 1px solid #ccc);
                 z-index: 3;
+                transition: visibility 0s linear var(--animated-time, 0.15s), opacity var(--animated-time, 0.15s) linear;
+            }
+            :host([animated]):host(:not([expanded])) #bigot {
+                visibility: hidden;
+                opacity: 0;
+            }
+            :host([animated]):host([expanded]) #bigot {
+                visibility: visible;
+                opacity: 1;
+                transition-delay: 0s;
             }
     
             #holder {
                 overflow-y: auto;
             }
-
+            
             :host(:not([search])) #search{
                 display: none;
             }
-
             #search {
                 line-height: normal;
             }
-    
             #search input[type=text]{
                 outline: var(--input-outline, 0px solid #aaa);
                 margin: var(--input-margin, 0px);
@@ -97,25 +123,40 @@
             ::slotted(high-option), high-option{
                 display: block;
                 cursor: pointer;
-                padding: 3px 6px;
+                padding: var(--option-padding, 3px 6px);
+                border: var(--option-border, none);
                 height: auto;
                 line-height: normal;
-            }::slotted(high-option[hidden]){
-                display: none;
-            }::slotted([disabled]){
-                background: #f9f9f9; color: #ddd;
-            }::slotted(:not([considered])):hover {
-                background: rgba(238, 238, 238, 0.767);
-            }::slotted(high-option[considered]){
-                background: #0080ff; color: #eee;
-            }::slotted(high-option[selected]){
-                background: #eee; color: #000;
+				transition: all 0.1s linear;
             }
+            ::slotted(high-option:hover) {
+                background: var(--option-hover-background, #fff);
+                color: var(--option-hover-color, #000);
+            }
+            ::slotted(high-option[hidden]){
+                display: none;
+            }
+            ::slotted([disabled]){
+                background: var(--option-disabled-background, #f9f9f9);
+                color: var(--option-disabled-color, #ddd);
+            }
+            ::slotted(:not([considered])):hover {
+                background: rgba(238, 238, 238, 0.767);
 
+            }
+            ::slotted(high-option[considered]){
+                background: var(--option-active-background, #0080ff);
+                color: var(--option-active-color, #000);
+            }
+            ::slotted(high-option[selected]){
+                background: var(--option-selected-background, #eee);
+                color: var(--option-selected-color, #000);
+            }
+            
             :host-context(.dark){
                 color: #e5c070;
             }
-
+            
             :host-context(.dark) #caller{
                 background: #282c34;
                 box-shadow: 0px 0px 2px #000, inset 0px 0px 5px 0px #21252b;
@@ -135,13 +176,11 @@
                 background: #282c34;
                 border: 1px solid #000;
             }
-
             :host-context(.dark) #search input[type=text]{
                 border-color: #666;
                 background: #282c34;
                 color: #e5c070;
             }
-
             :host-context(.dark) ::slotted([disabled]){
                 background: #32363e; color: #4e5562;
             }:host-context(.dark) ::slotted(high-option[considered]){
@@ -150,16 +189,15 @@
                 background: #373c44; color: #89bd55;
             }
         </style>
-
         <div id="caller">
-            <span id="chosen"></span> <span id="arrow">&#9660;</span>
+            <span id="chosen"></span> <span id="arrow"><span>&#8250;</span></span>
         </div>
-        <section id="bigot" hidden>
+        <section id="bigot">
             <div id="search">
                 <input type="text" spellcheck="false" tabindex="-1">
             </div>
             <div id="holder">
-                <slot name="option" maxlength="20"></option>
+                <slot name="option" maxlength="20"></slot>
             </div>
         </section>
     `;
@@ -217,6 +255,7 @@
             this.searchElm  = this.bigot.firstElementChild;
             this.input      = this.searchElm.firstElementChild;
             this.holder     = this.bigot.children[1];
+            this._animated  = this.hasAttribute('animated');
 
             this._optionSlot.addEventListener('slotchange', this._onSlotChange);
             this.caller.addEventListener('click', this._onCallerClick);
@@ -227,6 +266,10 @@
                     this.focus();
                 }
             }.bind(this));
+
+            if(!this._animated){
+                this._setHidden(true);
+            }
         }
 
         connectedCallback(){
@@ -357,7 +400,7 @@
         }
 
         _expand(){
-            this.bigot.hidden = false;
+            this._setHidden(false);
             this._attachBigotToCaller();
             this.input.focus();
             if( this._selectedOption )
@@ -365,13 +408,19 @@
         }
 
         _collapse(){
-            this.bigot.hidden = true;
+            this._setHidden(true);
             this._releaseBigot();
             if( this._consideredOption ){
                 this._consideredOption.considered = false;
                 this._consideredOption = null
             }
             this._resetSearch();
+        }
+
+        _setHidden(value) {
+            if(!this._animated) {
+                this.bigot.hidden = value;
+            }
         }
 
         _toggle(){
@@ -520,11 +569,13 @@
         }
 
         _releaseBigot(){
-            this.holder.style.maxHeight = 'none';
-            this.bigot.style.top = 'auto';
-            this.bigot.style.bottom = 'auto';
-            this.bigot.style.left = 'auto';
-            this.bigot.style.right = 'auto';
+            if(!this._animated){
+                this.holder.style.maxHeight = 'none';
+                this.bigot.style.top = 'auto';
+                this.bigot.style.bottom = 'auto';
+                this.bigot.style.left = 'auto';
+                this.bigot.style.right = 'auto';
+            }
         }
 
         _createChangeEvent(){
@@ -643,8 +694,8 @@
 
         _haveValidParent(){
             if( this.parentNode )
-                return this.parentNode.tagName.toLowerCase() === 'high-select' ? true : false;
-            else 
+                return this.parentNode.tagName.toLowerCase() === 'high-select';
+            else
                 return false;
         }
     }
