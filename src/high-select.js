@@ -62,15 +62,16 @@
                 color: var(--arrow-color, #000);
             }
             :host([arrow]):host([expanded]) #arrow > span {
-                transform: rotate(90deg);
-                left: 3px;
+                transform: rotate(-90deg);
+                left: 0px;
                 top: 0px;
             }		
             :host([arrow]) #arrow > span {
                 position: relative;
                 display: block;
-                top: -1px;
-                transform: rotate(-90deg);
+                top: 0px;
+                left: 3.5px;
+                transform: rotate(90deg);
             }
             :host([animated]) #arrow > span {
                 transition: transform var(--animated-time, 0.15s) linear;
