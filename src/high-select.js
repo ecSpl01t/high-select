@@ -137,7 +137,7 @@
 				transition: all 0.1s linear;
             }
 			
-			::slotted(high-option), high-option:last-child{
+			::slotted(high-option:last-child), high-option:last-child{
 				border: var(--option-last-border, none);
                 border-bottom: var(--option-last-border-bottom, none);
                 border-top: var(--option-last-border-top, none);
