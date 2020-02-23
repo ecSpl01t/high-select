@@ -81,11 +81,13 @@
             }
 
             #bigot {
+				max-height: var(--bigot-max-height, auto);
+				overflow-y: auto;
                 position: fixed;
                 box-shadow: var(--bigot-shadow, 0px 0px 6px #ccc);
                 background: var(--bigot-background, #fff);
                 border: var(--bigot-border, 1px solid #ccc);
-                z-index: 3;
+                z-index: var(--bigot-zIndex, 3);
                 transition: visibility 0s linear var(--animated-time, 0.15s), opacity var(--animated-time, 0.15s) linear;
             }
             :host([animated]):host(:not([expanded])) #bigot {
@@ -126,10 +128,22 @@
                 cursor: pointer;
                 padding: var(--option-padding, 3px 6px);
                 border: var(--option-border, none);
+                border-bottom: var(--option-border-bottom, none);
+                border-top: var(--option-border-top, none);
+                border-left: var(--option-border-left, none);
+                border-right: var(--option-border-right, none);
                 height: auto;
                 line-height: normal;
 				transition: all 0.1s linear;
             }
+			
+			::slotted(high-option), high-option:last-child{
+				border: var(--option-last-border, none);
+                border-bottom: var(--option-last-border-bottom, none);
+                border-top: var(--option-last-border-top, none);
+                border-left: var(--option-last-border-left, none);
+                border-right: var(--option-last-border-right, none);
+			}
             ::slotted(high-option:hover) {
                 background: var(--option-hover-background, #fff);
                 color: var(--option-hover-color, #000);
@@ -333,30 +347,30 @@
                     option = this._firstOption();
                     if( option )
                         this.expanded ? option.considered = true : this._select(option);
-                break;
+                    break;
                 case KEYCODES.ARROW_UP:
                     event.preventDefault();
                     option = this._previousOption();
                     if( option )
                         this.expanded ? option.considered = true : this._select(option);
-                break;
+                    break;
                 case KEYCODES.ARROW_DOWN:
                     event.preventDefault();
                     option = this._nextOption();
                     if( option )
                         this.expanded ? option.considered = true : this._select(option);
-                break;
+                    break;
                 case KEYCODES.END:
                     event.preventDefault();
                     option = this._lastOption();
                     if( option )
                         this.expanded ? option.considered = true : this._select(option);
-                break;
+                    break;
                 case KEYCODES.ESC:
                     event.preventDefault();
                     this.expanded = false;
                     this.focus();
-                break;
+                    break;
                 case KEYCODES.ENTER:
                     event.preventDefault();
                     if( this.expanded ){
@@ -368,7 +382,7 @@
                     } else {
                         this.expanded = true;
                     }
-                break;
+                    break;
                 default:
                     if( !this.expanded ){
                         if( isKeyPrintable(event.keyCode) ){
@@ -376,14 +390,14 @@
                             this.expanded = true;
                         }
                     }
-                break;
+                    break;
             }
         }
 
         _onKeyUp(event){
             if( event.target.value !== this._searchContent ){
                 this._searching(event.target.value.trim().toLowerCase());
-                
+
                 this._searchContent = event.target.value;
             }
         }
@@ -450,7 +464,7 @@
                 option.scrollIntoView({block: "nearest"});
             }
         }
-        
+
         _searching(content){
             let notFoundRecords, notFoundInContent, option;
             for( option of this.options ){
@@ -465,7 +479,7 @@
                 if( firstOption ) firstOption.considered = true;
             }
         }
-        
+
         _resetSearch(){
             if( this.input.value ){
                 this.input.value = '';
@@ -550,8 +564,8 @@
                 if( topSpace > bottomSpace ){
                     // show select on the top
                     this.bigot.style.bottom = newBigotBottom + "px";
-                    
-                    if( topSpace < bigotSizeAndPosition.height ) 
+
+                    if( topSpace < bigotSizeAndPosition.height )
                         this.holder.style.maxHeight = topSpace - this.searchElm.clientHeight - 10 + "px";
                 } else {
                     // show select on the bottom
@@ -570,13 +584,11 @@
         }
 
         _releaseBigot(){
-            if(!this._animated){
-                this.holder.style.maxHeight = 'none';
-                this.bigot.style.top = 'auto';
-                this.bigot.style.bottom = 'auto';
-                this.bigot.style.left = 'auto';
-                this.bigot.style.right = 'auto';
-            }
+            this.holder.style.maxHeight = 'none';
+            this.bigot.style.top = 'auto';
+            this.bigot.style.bottom = 'auto';
+            this.bigot.style.left = 'auto';
+            this.bigot.style.right = 'auto';
         }
 
         _createChangeEvent(){
@@ -618,7 +630,7 @@
         get disabled(){
             return this.hasAttribute('disabled');
         }
-        
+
         set value(value){
             value ? this.setAttribute('value', value) : this.removeAttribute('value');
         }
@@ -628,7 +640,7 @@
                 return this.getAttribute('value');
             } else {
                 const innerText = this.innerText.trim().toLowerCase();
-                return innerText ? innerText : this.title; 
+                return innerText ? innerText : this.title;
             }
         }
 
@@ -678,8 +690,8 @@
 
             if( this.considered && validAndEnable )
                 this.parentNode._consider(this);
-                
-            if( this.disabled ){ 
+
+            if( this.disabled ){
                 this.selected = false;
                 this.considered = false;
             }
@@ -687,9 +699,9 @@
 
         _upgradeProperty(prop) {
             if (this.hasOwnProperty(prop)) {
-              let value = this[prop];
-              delete this[prop];
-              this[prop] = value;
+                let value = this[prop];
+                delete this[prop];
+                this[prop] = value;
             }
         }
 
